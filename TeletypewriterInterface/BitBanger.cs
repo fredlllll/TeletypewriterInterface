@@ -2,13 +2,13 @@
 
 namespace TeletypewriterInterface
 {
-    class BitBanger : IDisposable
+    public class BitBanger : IDisposable
     {
-        private static GpioController gpio = new GpioController();
-        private bool isDisposed = false;
+        private readonly GpioController gpio = new();
         private readonly int pin;
         private readonly double bitDuration;
         private readonly int bitCount;
+        private bool isDisposed = false;
 
         public BitBanger(int pin, double baud = 50, int bitCount = 5)
         {
@@ -23,13 +23,13 @@ namespace TeletypewriterInterface
         void WriteBit(PinValue bitValue)
         {
             gpio.Write(pin, bitValue);
-            Thread.Sleep(TimeSpan.FromSeconds(bitDuration)); //TODO: better timing mechanism if necessary
+            Util.Sleep(bitDuration);
         }
 
-        void WriteStopBit()
+        void WriteStopBits()
         {
             gpio.Write(pin, PinValue.High);
-            Thread.Sleep(TimeSpan.FromSeconds(bitDuration * 1.5));
+            Util.Sleep(bitDuration * 1.5);
         }
 
         bool GetBit(byte val, int bit)
@@ -48,7 +48,7 @@ namespace TeletypewriterInterface
                 WriteBit(bit ? PinValue.High : PinValue.Low);
             }
 
-            WriteStopBit();
+            WriteStopBits();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -57,10 +57,8 @@ namespace TeletypewriterInterface
             {
                 if (disposing)
                 {
-
+                    gpio.Dispose();
                 }
-
-                gpio.ClosePin(pin);
                 isDisposed = true;
             }
         }
