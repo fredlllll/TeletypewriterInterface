@@ -6,18 +6,13 @@ using System.Threading.Tasks;
 
 namespace TeletypewriterInterface
 {
-    public class MenuItem
+    public class MenuItemProgram : MenuItem
     {
-        public string name;
+        public Action onUse;
 
-        public MenuItem(string name)
+        public MenuItemProgram(string name, Action onUse) : base(name)
         {
-            this.name = name;
-        }
-
-        public virtual void Use()
-        {
-
+            this.onUse = onUse;
         }
     }
 }

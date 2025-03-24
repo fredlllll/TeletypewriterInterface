@@ -29,5 +29,11 @@ namespace TeletypewriterInterface
             s += ITA2Encoder.SpecialChars.bell;
             return s;
         }
+
+        public void Use(int number)
+        {
+            var item = items[number - 1];
+            item.Use();
+        }
     }
 }
