@@ -20,9 +20,18 @@ namespace TeletypewriterInterface
         public static void WriteOut(string s)
         {
             var data = ITA2Encoder.GetBytes(s);
+            bool isLettersMode = true;
             foreach (byte c in data)
             {
-                Console.Write('.');
+                if (c == ITA2Encoder.SpecialBytes.letterMode)
+                {
+                    isLettersMode = true;
+                }
+                else if (c == ITA2Encoder.SpecialBytes.figuresMode)
+                {
+                    isLettersMode = false;
+                }
+                Console.Write(ITA2Encoder.GetChar(c, isLettersMode));
                 bitBanger.Send(c);
             }
         }
