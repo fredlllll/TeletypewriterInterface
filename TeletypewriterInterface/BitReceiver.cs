@@ -20,7 +20,7 @@ namespace TeletypewriterInterface
             bitDuration = 1 / baud;
             this.bitCount = bitCount;
 
-            gpio.OpenPin(pin, PinMode.InputPullUp);
+            gpio.OpenPin(pin, PinMode.InputPullDown);
             gpio.RegisterCallbackForPinValueChangedEvent(pin, PinEventTypes.Falling, OnStartBitDetected);
         }
 
