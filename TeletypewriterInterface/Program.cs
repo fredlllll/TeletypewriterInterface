@@ -32,31 +32,36 @@ namespace TeletypewriterInterface
                     isLettersMode = false;
                 }
                 char visibleChar = ITA2Encoder.GetChar(c, isLettersMode);
-                switch (visibleChar)
-                {
-                    case ITA2Encoder.SpecialChars.lineFeed:
-                        Console.WriteLine("\\n");
-                        break;
-                    case ITA2Encoder.SpecialChars.carriageReturn:
-                        Console.Write("\\r");
-                        break;
-                    case ITA2Encoder.SpecialChars.letterMode:
-                        Console.Write("\\x0f");
-                        break;
-                    case ITA2Encoder.SpecialChars.figuresMode:
-                        Console.Write("\\x0e");
-                        break;
-                    case ITA2Encoder.SpecialChars.whoAreYou:
-                        Console.Write("\\x05");
-                        break;
-                    case ITA2Encoder.SpecialChars.bell:
-                        Console.Write("\\x07");
-                        break;
-                    default:
-                        Console.Write(visibleChar);
-                        break;
-                }
+                WriteDebugChar(visibleChar);
                 bitBanger.Send(c);
+            }
+        }
+
+        static void WriteDebugChar(char c)
+        {
+            switch (c)
+            {
+                case ITA2Encoder.SpecialChars.lineFeed:
+                    Console.WriteLine("\\n");
+                    break;
+                case ITA2Encoder.SpecialChars.carriageReturn:
+                    Console.Write("\\r");
+                    break;
+                case ITA2Encoder.SpecialChars.letterMode:
+                    Console.Write("\\x0f");
+                    break;
+                case ITA2Encoder.SpecialChars.figuresMode:
+                    Console.Write("\\x0e");
+                    break;
+                case ITA2Encoder.SpecialChars.whoAreYou:
+                    Console.Write("\\x05");
+                    break;
+                case ITA2Encoder.SpecialChars.bell:
+                    Console.Write("\\x07");
+                    break;
+                default:
+                    Console.Write(c);
+                    break;
             }
         }
 
@@ -97,10 +102,18 @@ namespace TeletypewriterInterface
                 while (true)
                 {
                     char c = ReadNextCharacter();
+                    WriteDebugChar(c);
                     if ("123456789".Contains(c))
                     {
-                        currentMenu.Use(c - '1' + 1);
-                        break;
+                        try
+                        {
+                            currentMenu.Use(c - '1' + 1);
+                            break;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("error using menu");
+                        }
                     }
                 }
             }

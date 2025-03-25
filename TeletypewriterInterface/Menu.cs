@@ -24,7 +24,7 @@ namespace TeletypewriterInterface
             for (int i = 0; i < items.Length; ++i)
             {
                 var item = items[i];
-                s += $"{i+1}) {item.name}\r\n";
+                s += $"{i + 1}) {item.name}\r\n";
             }
             s += ITA2Encoder.SpecialChars.bell;
             return s;
@@ -32,6 +32,7 @@ namespace TeletypewriterInterface
 
         public void Use(int number)
         {
+            Console.WriteLine("using menu item " + number);
             var item = items[number - 1];
             item.Use();
         }
