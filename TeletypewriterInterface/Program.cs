@@ -31,7 +31,31 @@ namespace TeletypewriterInterface
                 {
                     isLettersMode = false;
                 }
-                Console.Write(ITA2Encoder.GetChar(c, isLettersMode));
+                char visibleChar = ITA2Encoder.GetChar(c, isLettersMode);
+                switch (visibleChar)
+                {
+                    case ITA2Encoder.SpecialChars.lineFeed:
+                        Console.CursorTop += 1;
+                        break;
+                    case ITA2Encoder.SpecialChars.carriageReturn:
+                        Console.CursorLeft = 0;
+                        break;
+                    case ITA2Encoder.SpecialChars.letterMode:
+                        Console.Write("\\x0f");
+                        break;
+                    case ITA2Encoder.SpecialChars.figuresMode:
+                        Console.Write("\\x0e");
+                        break;
+                    case ITA2Encoder.SpecialChars.whoAreYou:
+                        Console.Write("\\x05");
+                        break;
+                    case ITA2Encoder.SpecialChars.bell:
+                        Console.Write("\\x07");
+                        break;
+                    default:
+                        Console.Write(visibleChar);
+                        break;
+                }
                 bitBanger.Send(c);
             }
         }
