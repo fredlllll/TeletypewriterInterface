@@ -73,7 +73,7 @@ namespace TeletypewriterInterface
                 {
                     yield return universalSignals[c];
                 }
-                if (letters.ContainsKey(c))
+                else if (letters.ContainsKey(c))
                 {
                     if (!lettersMode)
                     {
@@ -93,6 +93,7 @@ namespace TeletypewriterInterface
                 }
                 else
                 {
+                    Console.WriteLine("#unprintable: " + Convert.ToByte(c).ToString("x2") + "#");
                     yield return SpecialBytes.space;
                 }
             }
