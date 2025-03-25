@@ -69,6 +69,10 @@ namespace TeletypewriterInterface
             yield return SpecialBytes.letterMode;
             foreach (char c in text.ToUpper())
             {
+                if (universalSignals.ContainsKey(c))
+                {
+                    yield return universalSignals[c];
+                }
                 if (letters.ContainsKey(c))
                 {
                     if (!lettersMode)
