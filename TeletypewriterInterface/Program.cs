@@ -35,10 +35,10 @@ namespace TeletypewriterInterface
                 switch (visibleChar)
                 {
                     case ITA2Encoder.SpecialChars.lineFeed:
-                        Console.CursorTop += 1;
+                        Console.WriteLine("\\n");
                         break;
                     case ITA2Encoder.SpecialChars.carriageReturn:
-                        Console.CursorLeft = 0;
+                        Console.Write("\\r");
                         break;
                     case ITA2Encoder.SpecialChars.letterMode:
                         Console.Write("\\x0f");
