@@ -6,7 +6,7 @@ namespace TeletypewriterInterface
     {
         public static readonly BitBanger bitBanger = new BitBanger(17);
         public static readonly BitReceiver bitReceiver = new BitReceiver(27);
-        public static readonly Menu mainMenu = new Menu("hauptmenü", new MenuItem[] {
+        public static readonly Menu mainMenu = new Menu("hauptmenue", new MenuItem[] {
                 new MenuItemProgram("wetter",Programs.Weather.Run),
                 new MenuItemProgram("text art",Programs.TextArt.Run),
                 new ("email lesen"),

@@ -56,7 +56,7 @@ namespace TeletypewriterInterface
             {'0', 0b10110}, {'1', 0b10111}, {'2', 0b10011}, {'3', 0b00001},
             {'4', 0b01010}, {'5', 0b10000}, {'6', 0b10101}, {'7', 0b00111},
             {'8', 0b00110}, {'9', 0b11000}, {':', 0b01110}, {'=', 0b11110},
-            {'?', 0b11001}, {'Ä', 0b01101}, {'Ö', 0b01110}, {'Ü', 0b01111},
+            {'?', 0b11001},
             {SpecialChars.bell, SpecialBytes.bell}, {SpecialChars.whoAreYou, SpecialBytes.whoAreYou}
         };
 
