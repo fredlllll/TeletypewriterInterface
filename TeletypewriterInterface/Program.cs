@@ -91,9 +91,8 @@ namespace TeletypewriterInterface
             }
         }
 
-        static void Main()
+        static void ProgramMain()
         {
-
             while (true)
             {
                 WriteOut(currentMenu.ToString());
@@ -115,6 +114,43 @@ namespace TeletypewriterInterface
                             Console.WriteLine("error using menu");
                         }
                     }
+                }
+            }
+        }
+
+        static void ProgramInput()
+        {
+            while (true)
+            {
+                char c = ReadNextCharacter();
+                WriteDebugChar(c);
+            }
+        }
+
+        static void ProgramOutput()
+        {
+            while (true)
+            {
+                WriteOut("abcdefghijklmnopqrstuvwxyz -,:?.'()/+=0123456789"+ITA2Encoder.SpecialChars.bell+"\r\n");
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            if (args.Length == 0)
+            {
+                ProgramMain();
+            }
+            else
+            {
+                switch (args[0])
+                {
+                    case "input":
+                        ProgramInput();
+                        break;
+                    case "output":
+                        ProgramOutput();
+                        break;
                 }
             }
         }
