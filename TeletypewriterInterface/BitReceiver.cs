@@ -37,11 +37,15 @@ namespace TeletypewriterInterface
         {
             if (!isReceiving)
             {
-                gpio.Write(debugPin, PinValue.High);
-                isReceiving = true;
-                readerEvent.Set();
                 Util.Sleep(bitDuration / 5);
-                gpio.Write(debugPin, PinValue.Low);
+                if (gpio.Read(pin) == PinValue.Low) //check if just a blip or actually low for longer
+                {
+                    gpio.Write(debugPin, PinValue.High);
+                    isReceiving = true;
+                    readerEvent.Set();
+                    Util.Sleep(bitDuration / 5);
+                    gpio.Write(debugPin, PinValue.Low);
+                }
             }
         }
 
@@ -58,12 +62,21 @@ namespace TeletypewriterInterface
 
         bool ReadBit()
         {
-            return gpio.Read(pin) == PinValue.High;
+            int highReads = 0;
+            for (int i = 0; i < 4; ++i)
+            {
+                if (gpio.Read(pin) == PinValue.High)
+                {
+                    highReads++;
+                }
+                Util.Sleep(bitDuration / 5);
+            }
+            return highReads > 2;
         }
 
         int ReceiveByte()
         {
-            Util.Sleep(bitDuration * 1.5);
+            Util.Sleep(bitDuration); //1/5th into the first bit
 
             int receivedByte = 0;
 
@@ -77,11 +90,11 @@ namespace TeletypewriterInterface
                 {
                     receivedByte |= 1 << i;
                 }
-                Util.Sleep(bitDuration);
+                Util.Sleep(bitDuration / 5);
             }
 
             // skip stop bits
-            Util.Sleep(bitDuration); //as we trigger on falling edge, we can exit half a bit early to be sure to catch the next startbit
+            Util.Sleep(bitDuration * 0.8); //as we trigger on falling edge, we can exit half a bit early to be sure to catch the next startbit
             gpio.Write(debugPin, PinValue.Low);
 
             return receivedByte;
