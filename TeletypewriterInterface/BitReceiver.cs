@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Device.Gpio;
+using System.Diagnostics;
 
 namespace TeletypewriterInterface
 {
@@ -13,6 +14,7 @@ namespace TeletypewriterInterface
         private bool isReceiving = false;
         private readonly Thread readerThread;
         private readonly AutoResetEvent readerEvent = new(false);
+        private readonly Stopwatch timer = new();
 
         public readonly ConcurrentQueue<byte> bufferedData = new();
 
@@ -33,6 +35,7 @@ namespace TeletypewriterInterface
             if (!isReceiving)
             {
                 isReceiving = true;
+                timer.Restart();
                 readerEvent.Set();
             }
         }
@@ -55,7 +58,10 @@ namespace TeletypewriterInterface
 
         int ReceiveByte()
         {
-            Util.Sleep(bitDuration);
+            while (timer.Elapsed.TotalSeconds < bitDuration)
+            {
+                //spin wait for first measurment interval
+            }
 
             int receivedByte = 0;
 
