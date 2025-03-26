@@ -11,6 +11,8 @@ namespace TeletypewriterInterface
         private readonly int bitCount;
         private bool isDisposed = false;
         private bool isReceiving = false;
+        private readonly Thread readerThread;
+        private readonly AutoResetEvent readerEvent = new(false);
 
         public readonly ConcurrentQueue<byte> bufferedData = new();
 
@@ -20,6 +22,8 @@ namespace TeletypewriterInterface
             bitDuration = 1 / baud;
             this.bitCount = bitCount;
 
+            readerThread = new Thread(RunRead);
+            readerThread.Start();
             gpio.OpenPin(pin, PinMode.InputPullDown);
             gpio.RegisterCallbackForPinValueChangedEvent(pin, PinEventTypes.Falling, OnStartBitDetected);
         }
@@ -29,7 +33,15 @@ namespace TeletypewriterInterface
             if (!isReceiving)
             {
                 isReceiving = true;
+                readerEvent.Set();
+            }
+        }
 
+        void RunRead()
+        {
+            while (true)
+            {
+                readerEvent.WaitOne();
                 int receivedByte = ReceiveByte();
                 bufferedData.Enqueue((byte)receivedByte);
                 isReceiving = false;
@@ -43,13 +55,16 @@ namespace TeletypewriterInterface
 
         int ReceiveByte()
         {
-            Util.Sleep(bitDuration * 1.5); // wait start bit + 50% of bit duration to be close to the edge
+            Util.Sleep(bitDuration);
 
             int receivedByte = 0;
 
             for (int i = 0; i < bitCount; i++)
             {
-                receivedByte |= (ReadBit() ? 1 : 0) << i;
+                if (ReadBit())
+                {
+                    receivedByte |= 1 << i;
+                }
                 Util.Sleep(bitDuration);
             }
 
