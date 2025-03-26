@@ -105,14 +105,22 @@ namespace TeletypewriterInterface
             {
                 return universalSignalsInverse[data];
             }
-            if (isLetterMode)
+            try
             {
-                return lettersInverse[data];
+                if (isLetterMode)
+                {
+                    return lettersInverse[data];
+                }
+                else
+                {
+                    return figuresInverse[data];
+                }
             }
-            else
+            catch
             {
-                return figuresInverse[data];
+                Console.WriteLine("#unreadable: " + data.ToString("x2") + "#");
             }
+            return '#';
         }
     }
 }
