@@ -30,6 +30,32 @@ namespace TeletypewriterInterface
             return s;
         }
 
+        public void WaitOnInput()
+        {
+            while (true)
+            {
+                char c = TeleIO.ReadNextCharacter();
+                TeleIO.WriteDebugChar(c);
+                if ("123456789".Contains(c))
+                {
+                    try
+                    {
+                        Use(c - '1' + 1);
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("error using menu");
+                    }
+                }
+                else if (c == '?')
+                {
+                    TeleIO.WriteOut(this.ToString());
+                    TeleIO.bitReceiver.bufferedData.Clear();
+                }
+            }
+        }
+
         public void Use(int number)
         {
             Console.WriteLine("using menu item " + number);

@@ -14,5 +14,10 @@ namespace TeletypewriterInterface
         {
             this.onUse = onUse;
         }
+
+        public override void Use()
+        {
+            onUse();
+        }
     }
 }

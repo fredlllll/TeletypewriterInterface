@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TeletypewriterInterface
 {
-    public class MenuItem
+    public abstract class MenuItem
     {
         public string name;
 
@@ -15,9 +15,6 @@ namespace TeletypewriterInterface
             this.name = name;
         }
 
-        public virtual void Use()
-        {
-
-        }
+        public abstract void Use();
     }
 }

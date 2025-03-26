@@ -10,7 +10,7 @@ namespace TeletypewriterInterface.Programs
     {
         public static void Run()
         {
-            Program.WriteOut("---wetter---\r\nwoher soll ich das wissen?\r\n\n");
+            TeleIO.WriteOut("---wetter---\r\nwoher soll ich das wissen?\r\n\n");
         }
     }
 }

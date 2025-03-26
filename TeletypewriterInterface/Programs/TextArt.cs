@@ -10,7 +10,7 @@ namespace TeletypewriterInterface.Programs
     {
         public static void Run()
         {
-            Program.WriteOut("---text art---\r\n     XX\r\n    XOOX\r\n   XOXXOX\r\n  XOX  XOX\r\n XOX    XOX\r\nXOX      XOX\r\nXOX      XOX\r\n XOX    XOX\r\n  XOX  XOX\r\n   XOXXOX\r\n    XOOX\r\n     XX\r\n\n");
+            TeleIO.WriteOut("---text art---\r\n     XX\r\n    XOOX\r\n   XOXXOX\r\n  XOX  XOX\r\n XOX    XOX\r\nXOX      XOX\r\nXOX      XOX\r\n XOX    XOX\r\n  XOX  XOX\r\n   XOXXOX\r\n    XOOX\r\n     XX\r\n\n");
         }
     }
 }
