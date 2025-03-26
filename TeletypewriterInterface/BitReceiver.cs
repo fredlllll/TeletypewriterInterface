@@ -15,7 +15,6 @@ namespace TeletypewriterInterface
         private bool isReceiving = false;
         private readonly Thread readerThread;
         private readonly AutoResetEvent readerEvent = new(false);
-        private readonly Stopwatch timer = new();
 
         public readonly ConcurrentQueue<byte> bufferedData = new();
 
@@ -40,7 +39,6 @@ namespace TeletypewriterInterface
             {
                 gpio.Write(debugPin, PinValue.High);
                 isReceiving = true;
-                timer.Restart();
                 readerEvent.Set();
                 Util.Sleep(bitDuration / 5);
                 gpio.Write(debugPin, PinValue.Low);
@@ -65,10 +63,7 @@ namespace TeletypewriterInterface
 
         int ReceiveByte()
         {
-            while (timer.Elapsed.TotalSeconds < bitDuration)
-            {
-                //spin wait for first measurment interval
-            }
+            Util.Sleep(bitDuration * 1.5);
 
             int receivedByte = 0;
 
@@ -86,7 +81,7 @@ namespace TeletypewriterInterface
             }
 
             // skip stop bits
-            Util.Sleep(bitDuration * 1.5); //as we trigger on falling edge, we can exit half a bit early to be sure to catch the next startbit
+            Util.Sleep(bitDuration); //as we trigger on falling edge, we can exit half a bit early to be sure to catch the next startbit
             gpio.Write(debugPin, PinValue.Low);
 
             return receivedByte;
