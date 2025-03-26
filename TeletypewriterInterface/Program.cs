@@ -36,6 +36,7 @@ namespace TeletypewriterInterface
 
         static void ProgramOutput()
         {
+            TeleIO.bitBanger.Send(ITA2Encoder.SpecialBytes.letterMode);
             while (true)
             {
                 TeleIO.WriteOut("abcdefghijklmnopqrstuvwxyz -,:?.'()/+=0123456789" + ITA2Encoder.SpecialChars.bell + "\r\n");

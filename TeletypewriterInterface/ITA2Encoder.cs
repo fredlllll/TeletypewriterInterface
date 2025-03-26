@@ -62,11 +62,8 @@ namespace TeletypewriterInterface
 
         public static readonly IReadOnlyDictionary<byte, char> figuresInverse = Util.InvertDictionary(figures);
 
-        public static IEnumerable<byte> GetBytes(string text)
+        public static IEnumerable<byte> GetBytes(string text, bool isLettersMode =true)
         {
-            bool lettersMode = true;
-
-            yield return SpecialBytes.letterMode;
             foreach (char c in text.ToUpper())
             {
                 if (universalSignals.ContainsKey(c))
@@ -75,19 +72,19 @@ namespace TeletypewriterInterface
                 }
                 else if (letters.ContainsKey(c))
                 {
-                    if (!lettersMode)
+                    if (!isLettersMode)
                     {
                         yield return SpecialBytes.letterMode;
-                        lettersMode = true;
+                        isLettersMode = true;
                     }
                     yield return letters[c];
                 }
                 else if (figures.ContainsKey(c))
                 {
-                    if (lettersMode)
+                    if (isLettersMode)
                     {
                         yield return SpecialBytes.figuresMode;
-                        lettersMode = false;
+                        isLettersMode = false;
                     }
                     yield return figures[c];
                 }

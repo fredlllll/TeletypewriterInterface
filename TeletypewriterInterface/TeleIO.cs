@@ -11,22 +11,22 @@ namespace TeletypewriterInterface
         public static readonly BitBanger bitBanger = new BitBanger(17);
         public static readonly BitReceiver bitReceiver = new BitReceiver(27);
         static bool inputIsLettersMode = true;
+        static bool outputIsLettersMode = true;
 
         public static void WriteOut(string s)
         {
-            var data = ITA2Encoder.GetBytes(s);
-            bool isLettersMode = true;
+            var data = ITA2Encoder.GetBytes(s, outputIsLettersMode);
             foreach (byte c in data)
             {
                 if (c == ITA2Encoder.SpecialBytes.letterMode)
                 {
-                    isLettersMode = true;
+                    outputIsLettersMode = true;
                 }
                 else if (c == ITA2Encoder.SpecialBytes.figuresMode)
                 {
-                    isLettersMode = false;
+                    outputIsLettersMode = false;
                 }
-                char visibleChar = ITA2Encoder.GetChar(c, isLettersMode);
+                char visibleChar = ITA2Encoder.GetChar(c, outputIsLettersMode);
                 WriteDebugChar(visibleChar);
                 bitBanger.Send(c);
             }
