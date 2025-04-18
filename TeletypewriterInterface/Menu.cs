@@ -20,7 +20,7 @@ namespace TeletypewriterInterface
 
         public override string ToString()
         {
-            string s = $"--- {name} ---\r\n";
+            string s = $"---{name}---\r\n";
             for (int i = 0; i < items.Length; ++i)
             {
                 var item = items[i];
@@ -35,7 +35,7 @@ namespace TeletypewriterInterface
             while (true)
             {
                 char c = TeleIO.ReadNextCharacter();
-                TeleIO.WriteDebugChar(c);
+                DebugPrint.WriteDebugChar(c);
                 if ("123456789".Contains(c))
                 {
                     try

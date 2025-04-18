@@ -20,43 +20,22 @@ namespace TeletypewriterInterface
             {
                 if (c == ITA2Encoder.SpecialBytes.letterMode)
                 {
+                    if (outputIsLettersMode)
+                    {
+                        continue; //skip if already in letters mode
+                    }
                     outputIsLettersMode = true;
                 }
                 else if (c == ITA2Encoder.SpecialBytes.figuresMode)
                 {
+                    if (!outputIsLettersMode)
+                    {
+                        continue; //skip if already in figures mode
+                    }
                     outputIsLettersMode = false;
                 }
-                char visibleChar = ITA2Encoder.GetChar(c, outputIsLettersMode);
-                WriteDebugChar(visibleChar);
+                DebugPrint.WriteDebugByte(c, outputIsLettersMode);
                 bitBanger.Send(c);
-            }
-        }
-
-        public static void WriteDebugChar(char c)
-        {
-            switch (c)
-            {
-                case ITA2Encoder.SpecialChars.lineFeed:
-                    Console.WriteLine("\\n");
-                    break;
-                case ITA2Encoder.SpecialChars.carriageReturn:
-                    Console.Write("\\r");
-                    break;
-                case ITA2Encoder.SpecialChars.letterMode:
-                    Console.Write("\\x0f");
-                    break;
-                case ITA2Encoder.SpecialChars.figuresMode:
-                    Console.Write("\\x0e");
-                    break;
-                case ITA2Encoder.SpecialChars.whoAreYou:
-                    Console.Write("\\x05");
-                    break;
-                case ITA2Encoder.SpecialChars.bell:
-                    Console.Write("\\x07");
-                    break;
-                default:
-                    Console.Write(c);
-                    break;
             }
         }
 

@@ -62,7 +62,7 @@ namespace TeletypewriterInterface
 
         public static readonly IReadOnlyDictionary<byte, char> figuresInverse = Util.InvertDictionary(figures);
 
-        public static IEnumerable<byte> GetBytes(string text, bool isLettersMode =true)
+        public static IEnumerable<byte> GetBytes(string text, bool isLettersMode = true)
         {
             foreach (char c in text.ToUpper())
             {

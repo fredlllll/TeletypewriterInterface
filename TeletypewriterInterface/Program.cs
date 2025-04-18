@@ -1,6 +1,4 @@
-﻿using System.Device.Gpio;
-
-namespace TeletypewriterInterface
+﻿namespace TeletypewriterInterface
 {
     internal class Program
     {
@@ -19,6 +17,7 @@ namespace TeletypewriterInterface
 
         static void ProgramMain()
         {
+            TeleIO.WriteOut(ITA2Encoder.SpecialChars.letterMode + "\r" + ITA2Encoder.SpecialChars.bell); //return slide + bing
             while (true)
             {
                 currentMenu.WaitOnInput();
@@ -27,15 +26,17 @@ namespace TeletypewriterInterface
 
         static void ProgramInput()
         {
+            //program to only read input and print on console
             while (true)
             {
                 char c = TeleIO.ReadNextCharacter();
-                TeleIO.WriteDebugChar(c);
+                DebugPrint.WriteDebugChar(c);
             }
         }
 
         static void ProgramOutput()
         {
+            //program to just output all characters continously
             TeleIO.bitBanger.Send(ITA2Encoder.SpecialBytes.letterMode);
             while (true)
             {

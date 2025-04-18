@@ -11,6 +11,7 @@ namespace TeletypewriterInterface.Programs
     {
         public static void Run()
         {
+            TeleIO.WriteOut("---echo---\r\n");
             int newlineCount = 0;
             while (true)
             {
@@ -29,6 +30,7 @@ namespace TeletypewriterInterface.Programs
                     break;
                 }
             }
+            TeleIO.WriteOut("echo ende\r\n");
         }
     }
 }
