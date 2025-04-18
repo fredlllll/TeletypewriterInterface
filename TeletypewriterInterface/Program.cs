@@ -17,7 +17,8 @@
 
         static void ProgramMain()
         {
-            TeleIO.WriteOut(ITA2Encoder.SpecialChars.letterMode + "\r" + ITA2Encoder.SpecialChars.bell); //return slide + bing
+            //return slide + ring bell
+            TeleIO.WriteOut(ITA2Encoder.SpecialChars.figuresMode + "\r\r" + ITA2Encoder.SpecialChars.bell + ITA2Encoder.SpecialChars.letterMode);
             while (true)
             {
                 currentMenu.WaitOnInput();
