@@ -80,9 +80,9 @@ namespace TeletypewriterInterface.Programs
                 {
                     var r = task.Result;
                     var prec_prob = r.Hourly.PrecipitationProbability[DateTime.Now.Hour];
-                    TeleIO.WriteOut($"temperatur: {r.Current.Temperature2m}C    luftfeuchtigkeit: {r.Current.RelativeHumidity2m}%\r\n");
-                    TeleIO.WriteOut($"niederschlagswarscheinlichkeit: {prec_prob}%    wolkendecke: {r.Current.CloudCover}%\r\n");
-                    TeleIO.WriteOut($"regen: {r.Current.Rain + r.Current.Shower}mm    schnee: {r.Current.Snowfall}cm\r\n\n");
+                    TeleIO.WriteOut($"temperatur: {r.Current.Temperature2m:0.0}C    luftfeuchtigkeit: {r.Current.RelativeHumidity2m}pc\r\n");
+                    TeleIO.WriteOut($"niederschlagswarscheinlichkeit: {prec_prob}pc    wolkendecke: {r.Current.CloudCover}pc\r\n");
+                    TeleIO.WriteOut($"regen: {(r.Current.Rain + r.Current.Shower):0.00}mm    schnee: {r.Current.Snowfall:0.00}cm\r\n\n");
                 }
                 else
                 {
