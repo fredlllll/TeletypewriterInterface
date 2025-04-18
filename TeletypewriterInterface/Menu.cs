@@ -47,7 +47,7 @@ namespace TeletypewriterInterface
                     {
                         Console.WriteLine("error using menu");
                         Console.WriteLine(ex.ToString());
-                        TeleIO.WriteOut("fehler in programm. siehe konsole");
+                        TeleIO.WriteOut("fehler in programm. siehe konsole\r\n");
                     }
                 }
                 else if (c == '?')

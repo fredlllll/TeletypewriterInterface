@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TeletypewriterInterface.Programs
@@ -13,26 +15,53 @@ namespace TeletypewriterInterface.Programs
 
         class CurrentWeatherResponse
         {
-            public string time = ""; // 2025-04-18T16:30
-            public float temperature_2m = 0; //°C
-            public int cloud_cover = 0; // %
-            public float rain = 0; //mm
-            public float shower = 0; //mm
-            public float snowfall = 0; //cm (!!!)
-            public int relative_humidity_2m = 0; //%
+            [JsonPropertyName("time")]
+            public string Time { get; set; } = ""; // 2025-04-18T16:30
+            [JsonPropertyName("temperature_2m")]
+            public float Temperature2m { get; set; } = 0; //°C
+            [JsonPropertyName("cloud_cover")]
+            public int CloudCover { get; set; } = 0; // %
+            [JsonPropertyName("rain")]
+            public float Rain { get; set; } = 0; //mm
+            [JsonPropertyName("shower")]
+            public float Shower { get; set; } = 0; //mm
+            [JsonPropertyName("snowfall")]
+            public float Snowfall { get; set; } = 0; //cm (!!!)
+            [JsonPropertyName("relative_humidity_2m")]
+            public int RelativeHumidity2m { get; set; } = 0; //%
+
+            public override string ToString()
+            {
+                return $"time: {Time}\ntemperature_2m: {Temperature2m}\ncloud_cover: {CloudCover}\nrain: {Rain}\nshower: {Shower}\n"+
+                    $"snowfall: {Snowfall}\nrelative_humidity_2m: {RelativeHumidity2m}";
+            }
         }
 
         class HourlyWeatherResponse
         {
-            public string[] time = [];
-            public int[] precipitation_probability = [];
+            [JsonPropertyName("time")]
+            public string[] Time { get; set; } = [];
+            [JsonPropertyName("precipitation_probability")]
+            public int[] PrecipitationProbability { get; set; } = [];
+            public override string ToString()
+            {
+                return "time: [" + string.Join(", ", Time) + "]\n" +
+                    "precipitation_probability: [" + string.Join(", ", PrecipitationProbability) + "]";
+            }
         }
 
         class WeatherResponse
         {
-            public CurrentWeatherResponse current = new();
+            [JsonPropertyName("current")]
+            public CurrentWeatherResponse Current { get; set; } = new();
             //for some stupid reason there is no current precipitation probability in this api, so have to extract it from hourly
-            public HourlyWeatherResponse hourly = new();
+            [JsonPropertyName("hourly")]
+            public HourlyWeatherResponse Hourly { get; set; } = new();
+
+            public override string ToString()
+            {
+                return Current.ToString() + "\n" + Hourly.ToString();
+            }
         }
 
         public static void Run()
@@ -50,10 +79,10 @@ namespace TeletypewriterInterface.Programs
                 if (task.Result != null)
                 {
                     var r = task.Result;
-                    var prec_prob = r.hourly.precipitation_probability[DateTime.Now.Hour];
-                    TeleIO.WriteOut($"temperatur: {r.current.temperature_2m}C    luftfeuchtigkeit: {r.current.relative_humidity_2m}%\r\n");
-                    TeleIO.WriteOut($"niederschlagswarscheinlichkeit: {prec_prob}%    wolkendecke: {r.current.cloud_cover}%\r\n");
-                    TeleIO.WriteOut($"regen: {r.current.rain + r.current.shower}mm    schnee: {r.current.snowfall}cm\r\n\n");
+                    var prec_prob = r.Hourly.PrecipitationProbability[DateTime.Now.Hour];
+                    TeleIO.WriteOut($"temperatur: {r.Current.Temperature2m}C    luftfeuchtigkeit: {r.Current.RelativeHumidity2m}%\r\n");
+                    TeleIO.WriteOut($"niederschlagswarscheinlichkeit: {prec_prob}%    wolkendecke: {r.Current.CloudCover}%\r\n");
+                    TeleIO.WriteOut($"regen: {r.Current.Rain + r.Current.Shower}mm    schnee: {r.Current.Snowfall}cm\r\n\n");
                 }
                 else
                 {
